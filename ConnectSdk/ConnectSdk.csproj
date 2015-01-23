@@ -47,6 +47,7 @@
     <Compile Include="OverQpsException.cs" />
     <Compile Include="SdkException.cs" />
     <Compile Include="ApiRequest.cs" />
+    <Compile Include="Search\AgeOfPeople.cs" />
     <Compile Include="Search\EditorialSegment.cs" />
     <Compile Include="Search\GraphicalStyles.cs" />
     <Compile Include="Search\IBlendedImagesSearch.cs" />

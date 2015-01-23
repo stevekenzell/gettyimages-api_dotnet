@@ -89,6 +89,15 @@ namespace GettyImages.Connect.Tests
             ScenarioContext.Current.Add("task", task);
         }
 
+        [When(@"I search")]
+        public void WhenISearch()
+        {
+            var task =
+               ScenarioContext.Current.Get<SearchImages>("request").ExecuteAsync();
+            ScenarioContext.Current.Add("task", task);
+        }
+
+
 
         [When(@"I specify that I only want to return (.*) with my search results")]
         public void WhenISpecifyThatIOnlyWantToReturnFieldsWithMySearchResults(string field)
@@ -137,5 +146,12 @@ namespace GettyImages.Connect.Tests
             ScenarioContext.Current.Get<SearchImages>("request")
                 .WithOrientation((Orientation) Enum.Parse(typeof (Orientation), orientation));
         }
+
+        [When(@"I specify age of people")]
+        public void WhenISpecifyAgeOfPeople()
+        {
+            ScenarioContext.Current.Get<SearchImages>("request").WithPeopleOfAge(AgeOfPeople.Years30To34 | AgeOfPeople.Years25To29);
+        }
+
     }
 }

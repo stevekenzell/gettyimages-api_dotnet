@@ -19,7 +19,7 @@ namespace GettyImages.Connect.Search
         private const string SortOrderKey = "sort_order";
         private const string EmbedContentOnlyKey = "embed_content_only";
         private const string Excludenudity = "exclude_nudity";
-        private const string PhraseIsRequired = "Phrase is required";
+        private const string AgeOfPeopleKey = "age_of_people";
 
         protected readonly List<string> Fields = new List<string>();
         protected string AssetType;
@@ -27,6 +27,7 @@ namespace GettyImages.Connect.Search
         protected GraphicalStyles GraphicalStyles;
         protected Orientation Orientations;
         protected string SortOrder;
+
 
         private SearchImages(Credentials credentials, string baseUrl)
         {
@@ -50,12 +51,6 @@ namespace GettyImages.Connect.Search
 
         public override async Task<dynamic> ExecuteAsync()
         {
-            if (!QueryParameters.ContainsKey(PhraseKey) ||
-                string.IsNullOrWhiteSpace(QueryParameters[PhraseKey].ToString()))
-            {
-                throw new SdkException(PhraseIsRequired);
-            }
-
             Method = "GET";
             Path = string.IsNullOrEmpty(AssetType) ? V3SearchImagesPath : V3SearchImagesPath + "/" + AssetType;
 
@@ -318,6 +313,22 @@ namespace GettyImages.Connect.Search
         IEditorialImagesSearch IEditorialImagesSearch.WithOrientation(Orientation value)
         {
             return WithOrientation(value);
+        }
+
+        public SearchImages WithPeopleOfAge(AgeOfPeople value)
+        {
+            if (QueryParameters.ContainsKey(AgeOfPeopleKey))
+            {
+                QueryParameters[AgeOfPeopleKey] = value == AgeOfPeople.None
+                    ? value
+                    : (AgeOfPeople) QueryParameters[AgeOfPeopleKey] | value;
+            }
+            else
+            {
+                QueryParameters.Add(AgeOfPeopleKey, value);
+            }
+
+            return this;
         }
 
         private void AddQueryParameter(string key, object value)

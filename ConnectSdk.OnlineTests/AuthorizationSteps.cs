@@ -18,7 +18,23 @@ namespace GettyImages.Connect.Tests
                     ScenarioContext.Current.Get<string>("apisecret"),
                     Environment.GetEnvironmentVariable("ConnectSDK_UserName"),
                     Environment.GetEnvironmentVariable("ConnectSDK_UserPassword"));
-            var refreshToken = connect.GetAccessToken().Result.RefreshToken;
+            string refreshToken = null;
+            try
+            {
+                refreshToken = connect.GetAccessToken().Result.RefreshToken;
+            }
+            catch (AggregateException ex)
+            {
+                if (ex.InnerExceptions.Any(e => e.GetType() == typeof(OverQpsException)))
+                {
+                    Assert.Inconclusive("Over QPS");
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
             ScenarioContext.Current.Add("refreshtoken", refreshToken);
         }
 

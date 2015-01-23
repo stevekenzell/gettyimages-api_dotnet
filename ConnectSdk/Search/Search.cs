@@ -1,4 +1,6 @@
-﻿namespace GettyImages.Connect.Search
+﻿using System;
+
+namespace GettyImages.Connect.Search
 {
     public class Search
     {
@@ -19,6 +21,22 @@
         public IBlendedImagesSearch Images()
         {
             return SearchImages.GetInstance(_credentials, _baseUrl);
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public class DescriptionAttribute : Attribute
+    {
+        private readonly string _description;
+
+        public DescriptionAttribute(string description)
+        {
+            _description = description;
+        }
+
+        public string Description
+        {
+            get { return _description; }
         }
     }
 }
